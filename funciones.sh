@@ -67,10 +67,14 @@ arbol()
     #SI EL ARCHIVO ES UNA CARPETA:
     if [ -d $file ];then
       pos=$(($1+4));
+      #NOS MOVEMOS A LA DIRECCION DE LA SUBCARPETA:
       ubiact=$(pwd);
       ubiact=${ubiact}/${file}
       cd $ubiact
       arbol $pos $ubiact
+      #REGRESAMOS A LA CARPETA PADRE UNA VEZ TERMINADA LA RECURSIVIDAD:
+      cd ..
+      ubiact=$(pwd)
     fi
     cont=0
   done
