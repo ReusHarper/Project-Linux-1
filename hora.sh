@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-echo -e "\e[1;36mLa hora actual es \e[1;3;91m"
+echo "\e[1;36mLa hora actual es \e[1;3;91m"
 cat /proc/driver/rtc | grep "rtc_time*" | grep "[0-9]*:[0-9]*:[0-9]*" -o 
 
 << COMMENT
