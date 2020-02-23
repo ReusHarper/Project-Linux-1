@@ -10,9 +10,6 @@
 #LIMPIAMOS LA PANTALLA:
 clear
 
-#MOSTRAMOS EL MENU:
-echo "Hola mundo :D"
-
 #COMANDOS DE USUARIO:
 file="/"
 limpio=$(clear);
