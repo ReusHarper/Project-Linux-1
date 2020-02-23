@@ -10,8 +10,10 @@
 #LIMPIAMOS LA PANTALLA:
 clear
 
+#MOSTRAMOS EL MENU:
+echo "Hola mundo :D"
+
 #COMANDOS DE USUARIO:
-file="/"
 limpio=$(clear);
 lista=$(ls);
 listaper=$(ls -l);
@@ -20,7 +22,13 @@ total=$(ls | wc -l);
 ubiact=$(pwd);
 
 #VARIABLES DE USUARIO:
-pos=0;
+pos=0
+
+#COLORES:
+#ROJO=0;31
+#AMARILLO=1;33
+#AZUL=1;34
+#PURPURA=0;35
 
 #EJECUCION DEL PROGRAMA:
 echo "Carpeta actual: $ubiact"
@@ -29,7 +37,13 @@ echo "Total de archivos: $total"
 arbol()
 {
   #VARIABLES LOCALES:
-  cont=0; 
+  cont=0;
+  #echo "---------------> $2"
+
+  #IMPRIMIMOS EL PUNTO DE PARTIDA
+  if [ $1 -eq 0 ];then
+    echo "   \e[1;33m.\e[0m "
+  fi
 
   #IMPRIMIMOS EL LOS ARCHIVOS DE LA CARPETA ACTUAL Y SUS DERVIVADOS:
   for file in $(ls $2); do
@@ -37,21 +51,30 @@ arbol()
       printf " "
       cont=$((cont+1))
     done
-    printf "  |__ %s \n" $file
+
+    #SI EL ARCHIVO NO ES UNA CARPETA:
+    if [ ! -d $file ];then
+      #SI EL ARCHIVO ES EJECUTABLE:
+      if [ -x $file ];then
+        echo "  |__ \e[1;34m$file\e[0m"
+      else
+        echo "  |__ $file"
+      fi
+    else
+      echo "  |__ \e[1;33m$file\e[0m"
+    fi
+
+    #SI EL ARCHIVO ES UNA CARPETA:
     if [ -d $file ];then
       pos=$(($1+4));
-      arbol $pos ${ubiact}/${file}
+      ubiact=$(pwd);
+      ubiact=${ubiact}/${file}
+      cd $ubiact
+      arbol $pos $ubiact
     fi
     cont=0
   done
 
 }
 
-arbol 0
-
-
-#while [ $total -ge 0 ]
-#do
-#  echo $total
-#  total=$((total-1))
-#done
+arbol 0 $ubiact
