@@ -12,6 +12,8 @@ command clear
 
 status=0
 
+#VALIDACION DE USUARIO
+
 while [ $status = 0 ]; do
 
 	read -p "Usuario: " usuario
@@ -30,18 +32,34 @@ fi
 
 command clear
 
+#ENTRAMOS A LA PREBESHELL
+
 echo "\t\t\t$ORANGE$BOLD**********Bienvenido a la prebeshell humano**********\n$RESET"
 echo "Escribe la palabra \"ayuda\" para conocer las funciones\n "
 
-#A="ayuda"
+
 
 while read -p "$(echo  $BOLD$YELLOW"$USER:"$BOLD$BLUE"$PWD"$RESET"$ ")" variable 
 do
- 	if [ "$variable" = "ayuda" ];then 		
- 		sh ayuda.sh
- 	else 
-    	command $variable		
-    fi
+	while IFS= read -r line; do
+	 	if [ "$variable" = "$line" ];then 		
+	 		sh $line.sh
+	 		bandera=0 
+	 		break 
+	 	else 
+	 		bandera=1
+	 		
+	 	fi
+	done < comandos.txt
+
+	
+	if [ $bandera = 1 ];then
+ 		command $variable
+ 		bandera=0
+  	fi
 
 done
+
+
+
 

@@ -1,6 +1,5 @@
 ayuda
 arbol
-ayuda
 infosis
 fecha
 hora
