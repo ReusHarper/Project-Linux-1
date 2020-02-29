@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/bin/bash
+=======
+#!/bin/sh
+>>>>>>> ae5bbe13d2f9845f31dfe2b76f0535987cf847a9
 # PROYECTO 1 DE LINUX - PREBESHELL
 # AUTORES:
 #          Espinosa Guadarrama Arturo
@@ -10,9 +14,12 @@
 #LIMPIAMOS LA PANTALLA:
 clear
 
+<<<<<<< HEAD
 #MOSTRAMOS EL MENU:
 echo "Hola mundo :D"
 
+=======
+>>>>>>> ae5bbe13d2f9845f31dfe2b76f0535987cf847a9
 #COMANDOS DE USUARIO:
 limpio=$(clear);
 lista=$(ls);
