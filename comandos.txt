@@ -3,8 +3,7 @@ arbol
 infosis
 fecha
 hora
-buscar
 creditos
 gato
 ahorcado
-prebeplayer
+reproductor
