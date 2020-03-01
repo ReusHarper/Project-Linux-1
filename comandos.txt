@@ -5,5 +5,5 @@ fecha
 hora
 creditos
 gato
-ahorcado
+volado
 reproductor

@@ -34,17 +34,19 @@ command clear
 
 #ENTRAMOS A LA PREBESHELL
 
-echo "\t\t\t$ORANGE$BOLD**********Bienvenido a la prebeshell humano**********\n$RESET"
-echo "Escribe la palabra \"ayuda\" para conocer las funciones\n "
+echo -e "\t\t\t$ORANGE$BOLD**********Bienvenido a la prebeshell humano**********\n$RESET"
+echo -e "Escribe la palabra \"ayuda\" para conocer las funciones\n "
 
 
 
-while read -p "$(echo  $BOLD$YELLOW"$USER:"$BOLD$BLUE"$PWD"$RESET"$ ")" variable 
+while read -p "$(echo -e  $BOLD$YELLOW"$USER:"$BOLD$BLUE"$PWD"$RESET"$ ")" variable 
 do
 	while IFS= read -r line; do
 	 	if [ "$variable" = "$line" ];then 		
-	 		sh $line.sh
+	 		
+	 		bash $variable.sh
 	 		bandera=0 
+
 	 		break 
 	 	else 
 	 		bandera=1
