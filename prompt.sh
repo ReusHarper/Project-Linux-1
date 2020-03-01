@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 RESET="\033[0m"
 BOLD="\033[1m"
 YELLOW="\033[38;5;11m"
@@ -8,7 +7,7 @@ BLUE="\033[0;34m"
 ORANGE="\033[0;33m"
 
 
-command clear	
+clear	
 
 status=0
 
@@ -30,38 +29,48 @@ if su -c true "$usuario"; then
   echo "Correct password"
 fi
 
-command clear
+clear
 
 #ENTRAMOS A LA PREBESHELL
 
 echo -e "\t\t\t$ORANGE$BOLD**********Bienvenido a la prebeshell humano**********\n$RESET"
 echo -e "Escribe la palabra \"ayuda\" para conocer las funciones\n "
 
+contador_salida=0
 
-
-while read -p "$(echo -e  $BOLD$YELLOW"$USER:"$BOLD$BLUE"$PWD"$RESET"$ ")" variable 
+while [ $contador_salida -eq 0 ];
 do
-	while IFS= read -r line; do
-	 	if [ "$variable" = "$line" ];then 		
-	 		
-	 		bash $variable.sh
-	 		bandera=0 
 
-	 		break 
-	 	else 
-	 		bandera=1
-	 		
-	 	fi
-	done < comandos.txt
+	read -p "$(echo -e "$BOLD$YELLOW$USER:$BOLD$BLUE$PWD$RESET"$ "" )" comando
 
-	
-	if [ $bandera = 1 ];then
- 		command $variable
- 		bandera=0
-  	fi
+	case $comando in
+	'arbol')
+		bash arbol.sh
+	;;
+	'hora')
+		bash hora.sh
+	;;
+	'clear')
+		clear
+	;;
+	'ayuda')
+		bash ayuda.sh
+	;;
+	'infosis')
+		bash infosis.sh
+	;;
+	'prebeplayer')
+		bash reproductor.sh
+	;;
+	'volado')
+		bash volado.sh
+	;;
+	'gato')
+		bash gato.sh
+	;;
+	*)
+	command $comando
+	;;
+	esac
 
 done
-
-
-
-
