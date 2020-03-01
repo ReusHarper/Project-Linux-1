@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #!/bin/sh
 # PROYECTO 1 DE LINUX - PREBESHELL
 # AUTORES:
