@@ -36,8 +36,9 @@ printf "\n Total de archivos: $total\n\n"
 arbol()
 {
   #VARIABLES LOCALES:
-  cont=0;
-  #echo "---------------> $2"
+  cont=0
+  rama=0
+  #band=0
 
   #IMPRIMIMOS EL PUNTO DE PARTIDA
   if [ $1 -eq 0 ];then
@@ -47,18 +48,24 @@ arbol()
   #printf " -----------------> $ubiact\n"
   #IMPRIMIMOS EL LOS ARCHIVOS DE LA CARPETA ACTUAL Y SUS DERVIVADOS:
   for archivo in "$ubiact"/*; do
+
     while [ $cont -le $1 ]; do
       if [ $cont -eq 0 ]; then
         printf "   |"
       fi
+      if [ $rama -eq 4 ]; then
+        printf "|"
+        rama=0
+        band=1
+      fi
       printf " "
+
+      rama=$(($rama+1))
       cont=$((cont+1))
     done
+    rama=0
 
-    #SI EL ARCHIVO ESTA EN UNA SUBCARPETA:
-    if [ $3 -eq 1 ]; then
-      printf "|"
-    fi
+    #printf " --------------->>>>>>>>>>> ${archivo##*.} <<<<<<<<<<<---------------\n"
 
     #SI EL ARCHIVO ES UNA CARPETA:
     if [ -d "${archivo}" ]; then
@@ -70,13 +77,25 @@ arbol()
       cd ..
       ubiact=$(pwd)
 
+    #SI EL ARCHIVO ES DE TIPO MP2:
+    elif [ "${archivo##*.}" = "mp2" ]; then
+      printf "__ \e[1;35m${archivo##*/}\e[0m \n"
+
+    #SI EL ARCHIVO ES DE TIPO MP3:
+    elif [ "${archivo##*.}" = "mp3" ]; then
+      printf "__ \e[1;32m${archivo##*/}\e[0m \n"
+
+    #SI EL ARCHIVO ES DE TIPO MP4:
+    elif [ "${archivo##*.}" = "mp4" ];then
+      printf "__ \e[1;36m${archivo##*/}\e[0m \n"
+
     #SI EL ARCHIVO ES EJECUTABLE:
-    elif [ -x "$archivo" ];then
-        printf "__ \e[1;34m${archivo##*/}\e[0m \n"
+    elif [ -x "$archivo" ]; then
+      printf "__ \e[1;34m${archivo##*/}\e[0m \n"
 
     #SI ES UN ARCHIVO COMUN:
     elif [ -f "$archivo" ]; then
-        printf "__ ${archivo##*/} \n"
+      printf "__ ${archivo##*/} \n"
 
     #SI NO CUENTA CON ARCHIVOS:
     else
