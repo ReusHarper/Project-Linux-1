@@ -6,8 +6,10 @@ YELLOW="\033[38;5;11m"
 BLUE="\033[0;34m"
 ORANGE="\033[0;33m"
 
-
 clear	
+
+trap "" 2 20
+trap "" SIGTSTP  #anula Ctrl + C   y  Ctrl + Z
 
 status=0
 
