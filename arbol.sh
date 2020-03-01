@@ -1,8 +1,5 @@
 <<<<<<< HEAD
-#!/bin/bash
-=======
 #!/bin/sh
->>>>>>> ae5bbe13d2f9845f31dfe2b76f0535987cf847a9
 # PROYECTO 1 DE LINUX - PREBESHELL
 # AUTORES:
 #          Espinosa Guadarrama Arturo
@@ -14,12 +11,6 @@
 #LIMPIAMOS LA PANTALLA:
 clear
 
-<<<<<<< HEAD
-#MOSTRAMOS EL MENU:
-echo "Hola mundo :D"
-
-=======
->>>>>>> ae5bbe13d2f9845f31dfe2b76f0535987cf847a9
 #COMANDOS DE USUARIO:
 limpio=$(clear);
 lista=$(ls);
@@ -41,6 +32,8 @@ pos=0
 echo "Carpeta actual: $ubiact"
 echo "Total de archivos: $total"
 #echo $ubi
+
+
 arbol()
 {
   #VARIABLES LOCALES:
@@ -52,40 +45,49 @@ arbol()
     echo "   \e[1;33m.\e[0m "
   fi
 
+  #printf " -----------------> $ubiact\n"
   #IMPRIMIMOS EL LOS ARCHIVOS DE LA CARPETA ACTUAL Y SUS DERVIVADOS:
-  for file in $(ls $2); do
+  for archivo in "$ubiact"/*; do
     while [ $cont -le $1 ]; do
+      if [ $cont -eq 0 ]; then
+        printf "   |"
+      fi
       printf " "
       cont=$((cont+1))
     done
 
-    #SI EL ARCHIVO NO ES UNA CARPETA:
-    if [ ! -d $file ];then
-      #SI EL ARCHIVO ES EJECUTABLE:
-      if [ -x $file ];then
-        echo "  |__ \e[1;34m$file\e[0m"
-      else
-        echo "  |__ $file"
-      fi
-    else
-      echo "  |__ \e[1;33m$file\e[0m"
+    #SI EL ARCHIVO ESTA EN UNA SUBCARPETA:
+    if [ $3 -eq 1 ]; then
+      printf "|"
     fi
 
     #SI EL ARCHIVO ES UNA CARPETA:
-    if [ -d $file ];then
+    if [ -d "${archivo}" ]; then
+      printf "__ \e[1;33m${archivo##*/}\e[0m \n"
       pos=$(($1+4));
-      #NOS MOVEMOS A LA DIRECCION DE LA SUBCARPETA:
-      ubiact=$(pwd);
-      ubiact=${ubiact}/${file}
-      cd $ubiact
-      arbol $pos $ubiact
-      #REGRESAMOS A LA CARPETA PADRE UNA VEZ TERMINADA LA RECURSIVIDAD:
+      ubiact=${ubiact}/${archivo##*/}
+      cd "$ubiact"
+      arbol $pos "$ubiact" 1
       cd ..
       ubiact=$(pwd)
+
+    #SI EL ARCHIVO ES EJECUTABLE:
+    elif [ -x "$archivo" ];then
+        printf "__ \e[1;34m${archivo##*/}\e[0m \n"
+
+    #SI ES UN ARCHIVO COMUN:
+    elif [ -f "$archivo" ]; then
+        printf "__ ${archivo##*/} \n"
+
+    #SI NO CUENTA CON ARCHIVOS:
+    else
+      printf "    (Vacio)\n"
+
     fi
+
     cont=0
   done
 
 }
 
-arbol 0 $ubiact
+arbol 0 "$ubiact" 0
