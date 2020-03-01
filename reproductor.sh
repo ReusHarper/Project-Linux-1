@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # -*- ENCODING: UTF-8 -*-
 
 #COMANDOS DE USUARIO:
@@ -122,7 +122,8 @@ menuRep()
 {
 
   #VARIABLES LOCALES:
-  opcion=0;
+  opcion=0
+  band=1
 
   while [ $opcion -ne 6 ]; do
     clear
@@ -150,77 +151,89 @@ menuRep()
 
       #INGRESAMOS A UNA DE LAS OPCIONES ESCOGIDAS POR EL USUARIO:
       if [ $opcion -eq 1 ]; then
+
+        cont=1
+        for archivo in $ubiact/*.mp3; do
+          #printf "\n\t$cont. ${archivo##*/}\n\n"
+          canciones[$(($cont-1))]="${archivo##*/}"
+          cont=$(($cont+1))
+        done
+
         if [ $(which mpg123) ]; then
-          printf "\n\t>>>>>>>>>>>>>> REPRODUCCION DE LA LISTA ACTUAL <<<<<<<<<<<<<<\n\n"
-          printf " Directorio actual: \e[1;33m$ubiact\e[0m \n\n"
 
-          cont=1
+          while [ $band -eq 1 ]; do
+            printf "\n\t>>>>>>>>>>>>>> REPRODUCCION DE LA LISTA ACTUAL <<<<<<<<<<<<<<\n\n"
+            printf " Directorio actual: \e[1;33m$ubiact\e[0m \n\n"
 
-          for archivo in $ubiact/*.mp3; do
-            printf "\n\t$cont. ${archivo##*/}\n\n"
-            #my_array[10]="Número 11"
-            #echo ${my_array[10]}
-            #arreglo[$(($cont-1))]="${archivo##*/}"
-            #printf "\n $arreglo[$(($cont-1))]"
-            cont=$(($cont+1))
-          done
+            cont=1
+            for archivo in $ubiact/*.mp3; do
+              printf "\n\t$cont. ${archivo##*/}"
+              canciones[$(($cont-1))]="${archivo##*/}"
+              cont=$(($cont+1))
+            done
 
-          printf "\n\n Seleccione una opcion:\n"
-          printf "\n [ # ]: Reproduce el numero de cancion seleccionado (# - cualquier numero mayor a 0)."
-          printf "\n [ * ]: Reproduce todas las canciones de la lista."
-          printf "\n [ 0 ]: Reproduce la lista de canciones aleatoramente.\n"
-          printf "\n Opcion: "
-          read opcion
+            printf "\n\n Seleccione una opcion:\n"
+            printf "\n [ # ]: Reproduce el numero de cancion seleccionado (# - cualquier numero mayor a 0 y menor al total)."
+            printf "\n [ * ]: Reproduce todas las canciones de la lista."
+            printf "\n [ 0 ]: Reproduce la lista de canciones aleatoramente."
+            printf "\n [ ! ]: Salir.\n"
+            printf "\n Opcion: "
+            read opcion
 
-          if [ $opcion -gt 0 ]; then
-            if [ $opcion -le $cont ]; then
-              #printf "****** ${arreglo[0]}"
-              #command mpg123 "${arreglo[$cont]}"
-              printf " "
-            else
-              printf "\n "
-              printf "\n Presion enter para continuar ... "
-              read opcion
-              opcion=0
-            fi
+            if [ "$opcion" = "!" ]; then
+              band=0
 
-          elif [ "$opcion" = "*" ]; then
-            numero=1
-            while [ $numero -eq 1 ]; do
-              for archivo in "$ubiact"/*; do
-                if [ "${archivo##*.}" = "mp3" ]; then
-                  command mpg123 "${archivo##*/}"
+            elif [ "$opcion" = "*" ]; then
+              numero=1
+              while [ $numero -eq 1 ]; do
+                for archivo in "$ubiact"/*; do
+                  if [ "${archivo##*.}" = "mp3" ]; then
+                    command mpg123 "${archivo##*/}"
+                  fi
+                done
+                printf "\n La reproduccion de todos los archivos a concluido, desea reiniciar la reproduccion [1 - si / ! 1 - salir]: "
+                read numero
+                if [ $numero -ne 1 ]; then
+                  band=0
+                  printf "\n Presione enter para continuar ... "
+                  read opcion
                 fi
               done
-              printf "\n La reproduccion de todos los archivos a concluido, desea reiniciar la reproduccion [1 - si / 0 - no]: "
-              read numero
-              if [ $numero -eq 0 ]; then
-                printf "\n Presion enter para continuar ... "
+
+            elif [ $opcion -gt 0 ]; then
+              if [ $opcion -lt $cont ]; then
+                printf "\n \e[1;32mReproduccion iniciada\e[0m \n\n"
+                printf "\n Para quitar reproduccion presione q y enter ...\n\n"
+                command mpg123 "${canciones[$opcion]}"
+                read opcion
+              else
+                printf "\n Error, no es posible acceder al numero ingresado ya que esta fuera del limite."
+                printf "\n Presione 0 y enter para salir o solo enter para continuar: "
+                read opcion
+                if [ $opcion -eq 0 ]; then
+                  band=0
+                fi
               fi
-            done
+
+
+            elif [ $opcion -eq 0 ]; then
+              command clear
+              printf "\n\n Para quitar reproduccion presione q y enter ...\n\n"
+              command mpg123 -z "${ubiact}"/*
+
+            else
+              command clear
+              printf "\n\n\n Opcion invalida solo es posible ingresar numeros"
+              printf "\n\n Presione enter para continuar... "
+              read opcion
+            fi
+
+            command clear
+
             opcion=0
+          done
 
-          elif [ $opcion -eq 0 ]; then
-            printf " -> $ubiact"
-            command mpg123 -z "${ubiact}"/*
-
-          else
-            clear
-            printf "\n\n\n Opcion invalida solo es posible ingresar numeros\n\n Intentelo mas tarde... "
-          fi
-
-          read opcion
-          opcion=0
-
-
-          #for archivo in $arreglo; do
-            #pos=0
-            #SI EL ARCHIVO ES EJECUTABLE:
-            #if [ -x $archivo ];then
-              #echo " $pos.- \e[1;34m$archivo\e[0m"
-              #pos=$((pos+1));
-            #fi
-          #done
+          band=1
 
         else
           printf "\n Para iniciar el reproductor es necesario tener instalado mpg123\n"
@@ -330,3 +343,4 @@ menuRep()
 }
 
 menuRep
+
