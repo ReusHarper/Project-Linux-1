@@ -50,6 +50,9 @@ do
 	'hora')
 		bash hora.sh
 	;;
+	'fecha')
+		bash fecha.sh
+	;;
 	'clear')
 		clear
 	;;
