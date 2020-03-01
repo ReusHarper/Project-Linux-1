@@ -1,9 +1,0 @@
-ayuda
-arbol
-infosis
-fecha
-hora
-creditos
-gato
-volado
-reproductor
