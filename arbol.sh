@@ -28,8 +28,8 @@ pos=0
 #PURPURA=0;35
 
 #EJECUCION DEL PROGRAMA:
-echo "Carpeta actual: $ubiact"
-echo "Total de archivos: $total"
+printf "\n Carpeta actual: $ubiact"
+printf "\n Total de archivos: $total\n\n"
 #echo $ubi
 
 
