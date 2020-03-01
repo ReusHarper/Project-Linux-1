@@ -65,6 +65,8 @@ arbol()
     done
     rama=0
 
+    #printf " --------------->>>>>>>>>>> ${archivo##*.} <<<<<<<<<<<---------------\n"
+
     #SI EL ARCHIVO ES UNA CARPETA:
     if [ -d "${archivo}" ]; then
       printf "__ \e[1;33m${archivo##*/}\e[0m \n"
@@ -75,13 +77,25 @@ arbol()
       cd ..
       ubiact=$(pwd)
 
+    #SI EL ARCHIVO ES DE TIPO MP2:
+    elif [ "${archivo##*.}" = "mp2" ]; then
+      printf "__ \e[1;35m${archivo##*/}\e[0m \n"
+
+    #SI EL ARCHIVO ES DE TIPO MP3:
+    elif [ "${archivo##*.}" = "mp3" ]; then
+      printf "__ \e[1;32m${archivo##*/}\e[0m \n"
+
+    #SI EL ARCHIVO ES DE TIPO MP4:
+    elif [ "${archivo##*.}" = "mp4" ];then
+      printf "__ \e[1;36m${archivo##*/}\e[0m \n"
+
     #SI EL ARCHIVO ES EJECUTABLE:
-    elif [ -x "$archivo" ];then
-        printf "__ \e[1;34m${archivo##*/}\e[0m \n"
+    elif [ -x "$archivo" ]; then
+      printf "__ \e[1;34m${archivo##*/}\e[0m \n"
 
     #SI ES UN ARCHIVO COMUN:
     elif [ -f "$archivo" ]; then
-        printf "__ ${archivo##*/} \n"
+      printf "__ ${archivo##*/} \n"
 
     #SI NO CUENTA CON ARCHIVOS:
     else
