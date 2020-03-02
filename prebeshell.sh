@@ -26,7 +26,7 @@ while true; do
         index="\$${array[1]}\$${array[2]}"
         hash=`python -c 'import crypt; import sys; print crypt.crypt( sys.argv[1] , sys.argv[2])' $contramarca $index`
 
-        match=`echo "$linea" | grep -c "$hash"`             #detecta si se dieron like en tinder
+        match=`echo "$linea" | grep -c "$hash"`
 
 
         if [ "$match" -eq 1 ]; then
