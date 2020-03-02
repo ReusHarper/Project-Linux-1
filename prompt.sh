@@ -73,6 +73,12 @@ do
 	'gato')
 		bash gato.sh
 	;;
+	'buscar')
+		bash buscar.sh
+	;;
+	'salir')
+		exit
+	;;
 	*)
 	command $comando
 	;;
